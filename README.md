@@ -2,12 +2,6 @@
 
 A repository dedicated to building and understanding Generative Pre-trained Transformer (GPT) models from scratch in PyTorch.
 
-## Installation
-
-```bash
-pip install -r requirements.txt
-```
-
 ## Repository Structure
 
 - **MathFoundation**: Mathematical prerequisites and activation functions.
