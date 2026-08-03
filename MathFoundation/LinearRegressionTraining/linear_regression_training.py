@@ -2,34 +2,63 @@ import numpy as np
 from numpy.typing import NDArray
 
 
-class Solution:
-    def get_derivative(self, model_prediction: NDArray[np.float64], ground_truth: NDArray[np.float64], N: int, X: NDArray[np.float64], desired_weight: int) -> float:
-        # note that N is just len(X)
-        return -2 * np.dot(ground_truth - model_prediction, X[:, desired_weight]) / N
+class LinearRegressionTraining:
+    learning_rate: float = 0.01
 
-    def get_model_prediction(self, X: NDArray[np.float64], weights: NDArray[np.float64]) -> NDArray[np.float64]:
-        return np.squeeze(np.matmul(X, weights))
+    def get_derivative(
+        self,
+        model_predictions: NDArray[np.float64],
+        ground_truth: NDArray[np.float64],
+        num_samples: int,
+        feature_matrix: NDArray[np.float64],
+        desired_weight_index: int,
+    ) -> float:
+        # Extract feature column values corresponding to the specific weight index
+        feature_column = feature_matrix[:, desired_weight_index]
 
-    learning_rate = 0.01
+        # Calculate prediction error residuals: (y - y_hat)
+        prediction_errors = ground_truth - model_predictions
+
+        # Partial derivative of MSE with respect to weight j: -2/N * sum((y - y_hat) * x_j)
+        weight_gradient = -2 * np.dot(prediction_errors, feature_column) / num_samples
+
+        return float(weight_gradient)
+
+    def get_model_prediction(
+        self,
+        feature_matrix: NDArray[np.float64],
+        weights: NDArray[np.float64],
+    ) -> NDArray[np.float64]:
+        # Compute predictions using matrix multiplication: y_hat = X * W
+        predictions = np.matmul(feature_matrix, weights)
+
+        return np.squeeze(predictions)
 
     def train_model(
         self,
-        X: NDArray[np.float64],
-        Y: NDArray[np.float64],
+        feature_matrix: NDArray[np.float64],
+        ground_truth: NDArray[np.float64],
         num_iterations: int,
-        initial_weights: NDArray[np.float64]
+        initial_weights: NDArray[np.float64],
     ) -> NDArray[np.float64]:
-        # For each iteration:
-        #   1. Compute predictions with get_model_prediction(X, weights)
-        #   2. For each weight index j, compute gradient with get_derivative()
-        #   3. Update: weights[j] -= learning_rate * gradient
-        # Return np.round(final_weights, 5)
+        # Initialize weights and determine dimensions
+        weights = initial_weights
+        num_weights = len(weights)
+        num_samples = len(feature_matrix)
 
-        n = len(initial_weights)
-        X_len = len(X)
+        # Run gradient descent training loop
+        for _ in range(num_iterations):
+            predictions = self.get_model_prediction(feature_matrix, weights)
 
-        for i in range(num_iterations):
-            y_pred = self.get_model_prediction(X, initial_weights)
-            for j in range(n):
-               initial_weights[j] -= self.learning_rate * self.get_derivative(y_pred, Y, X_len, X, j)
-        return np.round(initial_weights, 5)                                                                    
+            # Update each weight using its computed partial derivative
+            for weight_index in range(num_weights):
+                gradient = self.get_derivative(
+                    predictions,
+                    ground_truth,
+                    num_samples,
+                    feature_matrix,
+                    weight_index,
+                )
+                weights[weight_index] -= self.learning_rate * gradient
+
+        return np.round(weights, 5)

@@ -1,20 +1,20 @@
-class Solution:
-    def get_minimizer(self, iterations: int, learning_rate: float, init: int) -> float:
-        # Objective function: f(x) = x^2
-        # Derivative:         f'(x) = 2x
-        # Update rule:        x = x - learning_rate * f'(x)
-        # Round final answer to 5 decimal places
-        
-        x = init
-        
-        for _ in range(iterations): 
+class GradientDescent:
+    def gradient_descent(
+        self,
+        iterations: int,
+        learning_rate: float,
+        init: float,
+    ) -> float:
+        # Derivative function for f(x) = x^2, which is f'(x) = 2x
+        def compute_derivative(value: float) -> float:
+            return 2 * value
 
+        # Starting estimate for x
+        current_position = float(init)
 
-           derivative = 2 * x
-            
-           x -= learning_rate * derivative # x = x - learning_rate * derivative
+        # Iteratively take steps in the opposite direction of the gradient
+        for _ in range(iterations):
+            gradient = compute_derivative(current_position)
+            current_position -= learning_rate * gradient
 
-            
-        return round(x, 5)
-        
-        
+        return round(float(current_position), 5)

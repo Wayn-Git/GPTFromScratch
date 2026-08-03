@@ -2,31 +2,27 @@ import numpy as np
 from numpy.typing import NDArray
 
 
-class Solution:
-    def forward(self, x: NDArray[np.float64], w: NDArray[np.float64], b: float, activation: str) -> float:
-        # x: 1D input array
-        # w: 1D weight array (same length as x)
-        # b: scalar bias
-        # activation: "sigmoid" or "relu"
-        #
-        # Pre-activation: z = dot(x, w) + b
-        # Sigmoid: σ(z) = 1 / (1 + exp(-z))
-        # ReLU: max(0, z)
-        # return round(your_answer, 5)
-        # Formula for an perceptron = input x weights + bias -> activation -> output
+class SingleNeuron:
+    def forward(
+        self,
+        input_values: NDArray[np.float64],
+        weights: NDArray[np.float64],
+        bias: float,
+        activation: str,
+    ) -> float:
+        """Passing inputs through a single neuron with a chosen activation function."""
 
-        
+        weighted_sum = np.dot(input_values, weights) + bias
 
-        z = np.dot(x, w) + b
-        z = float(z)
-        sigmoid = 1/(1+ np.exp(-z))
-        relu = np.maximum(0, z)
+        def sigmoid(value: float) -> float:
+            return 1 / (1 + np.exp(-value))
+
+        def relu(value: float) -> float:
+            return max(0.0, value)
 
         if activation == "sigmoid":
-            output = float(sigmoid)
-        else:
-            output = float(relu)
+            output = sigmoid(weighted_sum)
+        elif activation == "relu":
+            output = relu(weighted_sum)
 
-
-
-        return round (output, 5)
+        return round(float(output), 5)

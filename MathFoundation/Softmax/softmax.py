@@ -2,14 +2,21 @@ import numpy as np
 from numpy.typing import NDArray
 
 
-class Solution:
+class Softmax:
+    def softmax(
+        self,
+        logits: NDArray[np.float64],
+    ) -> NDArray[np.float64]:
+        # Step 1: Subtract maximum logit for numerical stability to prevent exponential overflow
+        stabilized_logits = logits - np.max(logits)
 
-    def softmax(self, z: NDArray[np.float64]) -> NDArray[np.float64]:
-        # z is a 1D NumPy array of logits
-        # Hint: subtract max(z) for numerical stability before computing exp
-        # return np.round(your_answer, 4)
+        # Step 2: Exponentiate stabilized logits to make all values strictly positive
+        exponentiated_logits = np.exp(stabilized_logits)
 
+        # Step 3: Sum all exponentials to compute the normalization denominator
+        sum_of_exponentials = np.sum(exponentiated_logits)
 
-        formula = np.exp(z - np.max(z)) / sum(np.exp(z - np.max(z)))
-    
-        return np.round(formula, 4)
+        # Step 4: Divide exponentials by sum to get valid probabilities summing to 1
+        probabilities = exponentiated_logits / sum_of_exponentials
+
+        return np.round(probabilities, 4)

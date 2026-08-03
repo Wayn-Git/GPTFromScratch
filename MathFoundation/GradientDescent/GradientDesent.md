@@ -245,48 +245,14 @@ which is the minimum of the function.
 
 ---
 
-# Input
 
-```text
-iterations
-    - Number of Gradient Descent steps to execute.
-      Can be zero.
-      iterations >= 0.
+## Key Takeaways
 
-learning_rate
-    - The step-size multiplier (α).
-      Strictly between 0 and 1.
-
-init
-    - The starting value.
-      Can be any number.
-```
-
----
-
-# Implementation
-
-```python
-class Solution:
-    def get_minimizer(self, iterations: int, learning_rate: float, init: int) -> float:
-        x = init
-
-        for _ in range(iterations):
-            derivative = 2 * x
-            x -= learning_rate * derivative
-
-        return round(x, 5)
-```
-
-The implementation follows the Gradient Descent algorithm exactly:
-
-1. Start at `init`.
-2. Compute the derivative at the current position.
-3. Move a small step in the opposite direction of the derivative.
-4. Repeat for the requested number of iterations.
-5. Return the final value rounded to 5 decimal places.
-
----
+- Gradient points toward the steepest increase.
+- Gradient descent moves in the opposite direction.
+- Learning rate controls step size.
+- Too large a learning rate can overshoot the minimum.
+- Too small a learning rate converges slowly.
 
 ### Videos to refer
 
