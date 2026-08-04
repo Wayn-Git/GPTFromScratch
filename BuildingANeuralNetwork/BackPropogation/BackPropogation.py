@@ -30,3 +30,4 @@ class BackPropForNeuron:
             np.round(gradient_with_respect_to_weights, 5),
             np.round(gradient_with_respect_to_bias, 5),
         )
+ 
