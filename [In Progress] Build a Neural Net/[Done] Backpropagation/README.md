@@ -1,3 +1,0 @@
-# Backpropagation
-
-Status: Completed

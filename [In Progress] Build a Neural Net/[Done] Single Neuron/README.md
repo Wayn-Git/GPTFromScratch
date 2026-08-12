@@ -1,3 +1,0 @@
-# Single Neuron
-
-Status: Completed
