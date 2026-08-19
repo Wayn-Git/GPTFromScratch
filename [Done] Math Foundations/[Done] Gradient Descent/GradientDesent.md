@@ -170,7 +170,7 @@ The exact same update rule works on both sides of the graph.
 
 Taking the function `x²` as an example, the graph looks like this.
 
-<img src="../images/f(x^2)Graph.png" alt="x² Graph" width="400">
+<img src="[Done] Math Foundations/[Done] Gradient Descent/ images/fxgraph.png" alt="x² Graph" width="400">
 
 The minimum is located at:
 
